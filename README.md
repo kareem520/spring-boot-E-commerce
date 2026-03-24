@@ -1,2 +1,2 @@
 # spring-boot-E-commerce
-Build an API for an E-commerce using spring Boot 
+an API for an E-commerce using spring Boot 
