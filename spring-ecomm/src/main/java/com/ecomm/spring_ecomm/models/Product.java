@@ -31,8 +31,16 @@ public class Product extends BaseEntity {
     @Min(value = 0, message = "Quantity cannot be negative")
     public Integer quantity;
     public String image;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> order_items;
 
 }

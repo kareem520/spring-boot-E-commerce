@@ -75,6 +75,9 @@ public class User implements UserDetails {
     )
     private List<Role> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "seller")
+    private List <Product>products = new ArrayList<>();
+
     @OneToMany(mappedBy = "user")
     List<Order> orders = new ArrayList<>();
 
