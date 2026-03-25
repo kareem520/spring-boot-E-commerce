@@ -1,14 +1,11 @@
 package com.ecomm.spring_ecomm.services;
 
-import com.ecomm.spring_ecomm.DTOS.category.CategoryDTO;
-import com.ecomm.spring_ecomm.DTOS.category.CategoryResponse;
-import com.ecomm.spring_ecomm.DTOS.category.CreateCategoryRequest;
+import com.ecomm.spring_ecomm.DTOS.category.*;
 import com.ecomm.spring_ecomm.Repositories.CategoryRepository;
 import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.exception.ErrorCode;
 import com.ecomm.spring_ecomm.mapping.CategoryMap;
 import com.ecomm.spring_ecomm.models.Category;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,9 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -31,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryMap categoryMap;
 
     @Override
-    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+    public CategoryWithPaginationResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
 
         Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
@@ -62,7 +56,35 @@ public class CategoryServiceImpl implements CategoryService {
         }
         Category savedCategory = categoryRepository.save(category);
 
-        CategoryDTO categoryDTO = modelMapper.map(savedCategory,CategoryDTO.class);
-        return categoryDTO;
+        return modelMapper.map(savedCategory,CategoryDTO.class);
+    }
+
+    @Override
+    public void deleteCategory(String id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(()->new BusinessException(ErrorCode.ENTITY_NOT_FOUND,"Category",id));
+
+        if (!category.getProducts().isEmpty()) {
+            throw new BusinessException(ErrorCode.CATEGORY_HAVE_PRODUCTS);
+        }
+        categoryRepository.delete(category);
+    }
+
+    @Override
+    public CategoryUpdateResponse updateCategoryName(String id, CategoryUpdateNameRequest createCategoryRequest) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(()->new BusinessException(ErrorCode.ENTITY_NOT_FOUND,"Category",id));
+
+        Category isExist = categoryRepository.findByName(category.getName());
+        if (isExist!=null) {
+            throw new BusinessException(ErrorCode.CATEGORY_ALREADY_EXISTS);
+        }
+
+        if (!category.getProducts().isEmpty()) {
+            throw new BusinessException(ErrorCode.CATEGORY_HAVE_PRODUCTS);
+        }
+        category.setName(createCategoryRequest.getName());
+        Category updatedCategory = categoryRepository.save(category);
+        return modelMapper.map(updatedCategory,CategoryUpdateResponse.class);
     }
 }

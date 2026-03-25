@@ -13,10 +13,14 @@ public interface UserRepository extends JpaRepository<User, String> {
     boolean existsByEmail(String email);
     boolean existsByPhoneNumber(String phoneNumber);
         @Query("""
-        SELECT COUNT(u) > 0
+        SELECT COUNT(u)
         FROM User u
         JOIN u.roles r
         WHERE r.name = :role
-         """)
-    boolean existsByRoleName(AppRole role);
+    """)
+    long countByRoleName(AppRole role);
+
+    default boolean existsByRoleName(AppRole role) {
+        return countByRoleName(role) > 0;
+    }
 }

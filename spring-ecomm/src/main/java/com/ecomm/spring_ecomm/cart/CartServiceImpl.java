@@ -1,7 +1,6 @@
-package com.ecomm.spring_ecomm.services;
+package com.ecomm.spring_ecomm.cart;
 
 import com.ecomm.spring_ecomm.AuthUtil.AuthUtil;
-import com.ecomm.spring_ecomm.DTOS.cart.CartDTO;
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import com.ecomm.spring_ecomm.Repositories.CartItemRepository;
 import com.ecomm.spring_ecomm.Repositories.CartRepository;
@@ -18,11 +17,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CartServiceImpl implements CartService{
+public class CartServiceImpl implements CartService {
 
     @Autowired
     CartRepository cartRepository;

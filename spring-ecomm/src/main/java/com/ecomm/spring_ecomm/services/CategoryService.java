@@ -1,17 +1,12 @@
 package com.ecomm.spring_ecomm.services;
 
-import com.ecomm.spring_ecomm.DTOS.category.CategoryDTO;
-import com.ecomm.spring_ecomm.DTOS.category.CategoryResponse;
-import com.ecomm.spring_ecomm.DTOS.category.CreateCategoryRequest;
-import com.ecomm.spring_ecomm.models.Category;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
+import com.ecomm.spring_ecomm.DTOS.category.*;
 
 public interface CategoryService {
 
-    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    CategoryWithPaginationResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
     CategoryDTO getCategoryById(String id);
     CategoryDTO addCategory(CreateCategoryRequest category);
-
+    void deleteCategory(String id);
+    CategoryUpdateResponse updateCategoryName(String id, CategoryUpdateNameRequest categoryUpdateNameRequest);
 }

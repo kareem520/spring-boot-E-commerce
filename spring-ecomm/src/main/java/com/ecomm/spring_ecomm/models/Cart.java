@@ -20,7 +20,7 @@ public class Cart extends BaseEntity {
 
    private double totalPrice;
 
-    @OneToMany(mappedBy= "cart")
+    @OneToMany(mappedBy= "cart",orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
     @OneToOne

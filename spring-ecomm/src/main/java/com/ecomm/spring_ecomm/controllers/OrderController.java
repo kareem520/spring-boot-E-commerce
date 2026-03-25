@@ -7,6 +7,7 @@ import com.ecomm.spring_ecomm.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +20,22 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderDTO>> getAllOrders(){
-        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+
+    //ADMIN
+    @GetMapping("/admin/orders")
+    @PreAuthorize("hasAuthority('ROLE_Admin')")
+    public ResponseEntity<List<OrderDTO>> getAllOrdersForAllCustomers(){
+        return new ResponseEntity<>(orderService.getAllOrdersForAllCustomers(), HttpStatus.OK);
+    }
+    //USER
+    @GetMapping("/user/orders")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<List<OrderDTO>> getMyOrders(){
+        return new ResponseEntity<>(orderService.getMyOrders(), HttpStatus.OK);
     }
 
-    @PostMapping("/order")
+    @PostMapping("/user/order")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderDTO> placeOrder(
             @RequestParam(name = "customerEmail", defaultValue = AppConstants.CUSTOMER_EMAIL, required = false) String customerEmail,
             @RequestParam(name = "customerName", defaultValue = AppConstants.CUSTOMER_NAME, required = false) String customerName,

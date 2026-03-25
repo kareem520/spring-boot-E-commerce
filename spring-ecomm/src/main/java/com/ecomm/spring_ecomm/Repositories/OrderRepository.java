@@ -11,4 +11,13 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT c FROM Order c LEFT JOIN FETCH c.orderItems")
     List<Order> findAllWithOrderItems();
+    @Query("""
+    SELECT c
+    FROM Order c
+    JOIN c.user u
+    LEFT JOIN FETCH c.orderItems
+    WHERE u.id = :userId
+
+""")
+    List<Order>findByUser_idAllWithOrderItems(String userId);
 }

@@ -1,7 +1,7 @@
 package com.ecomm.spring_ecomm.mapping;
 
 import com.ecomm.spring_ecomm.DTOS.category.CategoryDTO;
-import com.ecomm.spring_ecomm.DTOS.category.CategoryResponse;
+import com.ecomm.spring_ecomm.DTOS.category.CategoryWithPaginationResponse;
 import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.exception.ErrorCode;
 import com.ecomm.spring_ecomm.models.Category;
@@ -18,7 +18,7 @@ public class CategoryMap {
     @Autowired
     ModelMapper modelMapper;
 
-    public CategoryResponse pageCategoriesToCategoryResponse(Page<Category> pageDetails){
+    public CategoryWithPaginationResponse pageCategoriesToCategoryResponse(Page<Category> pageDetails){
 
         List<Category> categories = pageDetails.getContent();
 
@@ -31,7 +31,7 @@ public class CategoryMap {
                     modelMapper.map(category,CategoryDTO.class))
                 .toList();
 
-        return  CategoryResponse.builder()
+        return  CategoryWithPaginationResponse.builder()
                 .categories(categoryDTOS)
                 .pageNumber(pageDetails.getNumber()+1)
                 .pageSize(pageDetails.getSize())

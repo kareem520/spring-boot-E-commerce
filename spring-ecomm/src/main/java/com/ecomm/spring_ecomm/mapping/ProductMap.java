@@ -1,10 +1,9 @@
 package com.ecomm.spring_ecomm.mapping;
 
 import com.ecomm.spring_ecomm.DTOS.product.ProductDTO;
-import com.ecomm.spring_ecomm.DTOS.product.ProductResponse;
+import com.ecomm.spring_ecomm.DTOS.product.ProductWithPaginationResponse;
 import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.exception.ErrorCode;
-import com.ecomm.spring_ecomm.helper.Calculation;
 import com.ecomm.spring_ecomm.models.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class ProductMap {
     @Autowired
     ModelMapper modelMapper;
 
-    public ProductResponse pageProductsToProductResponse(Page<Product> pageProducts) {
+    public ProductWithPaginationResponse pageProductsToProductResponse(Page<Product> pageProducts) {
 
         List<Product> products = pageProducts.getContent();
         if (products.isEmpty()) {
@@ -31,7 +30,7 @@ public class ProductMap {
                 .toList();
 
 
-        return  ProductResponse.builder()
+        return  ProductWithPaginationResponse.builder()
                 .products(productDTOS)
                 .pageNumber(pageProducts.getNumber() + 1)
                 .pageSize(pageProducts.getSize())

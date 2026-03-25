@@ -3,20 +3,16 @@ package com.ecomm.spring_ecomm.configurations;
 
 import com.ecomm.spring_ecomm.DTOS.Order.OrderDTO;
 import com.ecomm.spring_ecomm.DTOS.OrderItem.OrderItemDTO;
-import com.ecomm.spring_ecomm.DTOS.cart.CartDTO;
+import com.ecomm.spring_ecomm.cart.CartDTO;
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import com.ecomm.spring_ecomm.DTOS.product.ProductDTO;
-import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.helper.Calculation;
 import com.ecomm.spring_ecomm.models.*;
-import org.hibernate.type.MappingContext;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

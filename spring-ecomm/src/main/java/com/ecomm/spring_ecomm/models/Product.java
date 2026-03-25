@@ -18,19 +18,22 @@ public class Product extends BaseEntity {
 
     @NotBlank(message = "Product name is required")
     @Size(min = 2, max = 50, message = "Product name must be between {min} and {max} characters")
-    public String name;
+    private String name;
     @Size(max = 200, message = "Description cannot exceed 200 characters")
-    public String description;
+    private String description;
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.01", message = "Price must be at least 0.01")
-    public Double price;
+    private Double price;
     @Min(value = 0, message = "Discount percentage must be at least 0")
     @Max(value = 100, message = "Discount percentage cannot exceed 100")
-    public double discountPercentage;
+    private double discountPercentage;
     @NotNull(message = "Quantity is required")
     @Min(value = 0, message = "Quantity cannot be negative")
-    public Integer quantity;
-    public String image;
+    private Integer quantity;
+    private String image;
+    private Boolean isActive;
+
+
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -40,7 +43,10 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "seller_id")
     private User seller;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",orphanRemoval = true)
     private List<OrderItem> order_items;
+
+    @OneToMany(mappedBy = "product",orphanRemoval = true)
+    private List<CartItem> cart_items;
 
 }

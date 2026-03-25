@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<OrderDTO> getAllOrders();
+    List<OrderDTO> getMyOrders();
+    List<OrderDTO> getAllOrdersForAllCustomers();
     @Transactional
     OrderDTO placeMyOrder(String customerEmail, String customerAddress,String name,String customerPhoneNumber);
 }

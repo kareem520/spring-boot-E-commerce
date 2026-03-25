@@ -2,10 +2,11 @@ package com.ecomm.spring_ecomm.services;
 
 import com.ecomm.spring_ecomm.AuthUtil.AuthUtil;
 import com.ecomm.spring_ecomm.DTOS.Order.OrderDTO;
-import com.ecomm.spring_ecomm.DTOS.OrderItem.OrderItemDTO;
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
+import com.ecomm.spring_ecomm.Repositories.CartItemRepository;
 import com.ecomm.spring_ecomm.Repositories.OrderItemRepository;
 import com.ecomm.spring_ecomm.Repositories.OrderRepository;
+import com.ecomm.spring_ecomm.cart.CartService;
 import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.exception.ErrorCode;
 import com.ecomm.spring_ecomm.models.*;
@@ -32,11 +33,28 @@ public class OrderServiceImpl implements OrderService {
     ProductService productService;
     @Autowired
     CartService cartService;
-
+    @Autowired
+    CartItemRepository cartItemRepository;
     User ourUser;
 
     @Override
-    public List<OrderDTO> getAllOrders() {
+    public List<OrderDTO> getMyOrders() {
+        ourUser = authUtil.loggedInUser();
+        if (ourUser == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        List<Order> orders = orderRepository.findByUser_idAllWithOrderItems(ourUser.getId());
+        if  (orders.isEmpty()) {
+            throw new BusinessException(ErrorCode.NO_ORDERS_FOUND);
+        }
+        return orders.stream()
+                .map(order->modelMapper.map(order,OrderDTO.class)).toList();
+    }
+
+
+    @Override
+    public List<OrderDTO> getAllOrdersForAllCustomers() {
         List<Order> orders = orderRepository.findAllWithOrderItems();
 
         return orders.stream()
@@ -60,7 +78,6 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(ErrorCode.NO_ITEMS_TO_PLACE);
         }
 
-        List<CartItem> cartItems = ourCart.getItems();
 
         Order order = new Order();
 
@@ -81,29 +98,32 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderItem> orderItems = new ArrayList<>();
 
+        List<CartItem> cartItems = new ArrayList<>(ourCart.getItems()); // clone list
+
         for (CartItem cartItem : cartItems) {
-            if (cartItem.getQuantity()>cartItem.getProduct().getQuantity()) {
-                throw new BusinessException(ErrorCode.NO_ENOUGH_QUANTITY_FOUND,cartItem.getProductName());
+            if (cartItem.getQuantity() > cartItem.getProduct().getQuantity()) {
+                throw new BusinessException(ErrorCode.NO_ENOUGH_QUANTITY_FOUND, cartItem.getProductName());
             }
 
-            CartItemDto cartItemDto = modelMapper.map(cartItem,CartItemDto.class);
             OrderItem orderItem = new OrderItem();
-            orderItem.setPrice(cartItemDto.getPrice());
-            orderItem.setQuantity(cartItemDto.getQuantity());
-            orderItem.setOrderProductPrice(cartItemDto.getSpecialPrice());
-            orderItem.setPrice(cartItemDto.getPrice());
-            orderItem.setSubTotal(cartItemDto.getSubTotal());
-            orderItem.setProductName(cartItemDto.getProductName());
+            orderItem.setPrice(cartItem.getPrice());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setOrderProductPrice(cartItem.getSpecialPrice());
+            orderItem.setSubTotal(cartItem.getQuantity() * cartItem.getSpecialPrice());
+            orderItem.setProductName(cartItem.getProductName());
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setOrder(order);
             orderItems.add(orderItem);
 
-            productService.takeQuantityFromProduct(cartItem.getProduct().getCategory().getId(),
-                    cartItem.getProduct().getId(), cartItem.getQuantity());
-
-            cartService.deleteProductFromCart(cartItem.getProduct().getId());
+            // remove from cart to trigger orphanRemoval
+            cartItem.getCart().getItems().remove(cartItem);
+            cartItem.setCart(null);
+            cartItem.setProduct(null);
 
             orderItemRepository.save(orderItem);
+
+            // update product quantity
+            productService.takeQuantityFromProduct(cartItem.getProduct().getId(), cartItem.getQuantity());
         }
 
         order.setOrderItems(orderItems);

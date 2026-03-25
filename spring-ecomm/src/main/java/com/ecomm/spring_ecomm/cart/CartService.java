@@ -1,7 +1,5 @@
-package com.ecomm.spring_ecomm.services;
+package com.ecomm.spring_ecomm.cart;
 
-import com.ecomm.spring_ecomm.DTOS.cart.CartDTO;
-import com.ecomm.spring_ecomm.models.CartItem;
 import jakarta.transaction.Transactional;
 
 import java.util.List;

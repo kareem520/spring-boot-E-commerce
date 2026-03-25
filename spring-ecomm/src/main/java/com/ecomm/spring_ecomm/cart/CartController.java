@@ -1,11 +1,10 @@
-package com.ecomm.spring_ecomm.controllers;
+package com.ecomm.spring_ecomm.cart;
 
 
-import com.ecomm.spring_ecomm.DTOS.cart.CartDTO;
-import com.ecomm.spring_ecomm.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +35,7 @@ public class CartController {
     }
 
     @GetMapping("/admin/carts")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<CartDTO>> getAllCarts() {
         return new ResponseEntity<>(cartService.getCarts(),HttpStatus.OK);
     }

@@ -1,17 +1,17 @@
-package com.ecomm.spring_ecomm.DTOS.category;
+package com.ecomm.spring_ecomm.DTOS.product;
 
-import com.ecomm.spring_ecomm.models.Category;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class CategoryResponse {
-    List<CategoryDTO> categories;
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductWithPaginationResponse {
+    List<ProductDTO> products = new ArrayList<>();
     private Integer pageNumber;
     private Integer pageSize;
     private Long totalElements;
