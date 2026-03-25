@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class Order extends BaseEntity {
     private double totalPrice;
 
     @OneToMany(mappedBy = "order")
-    List<OrderItem> orderItems;
+    List<OrderItem> orderItems =  new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

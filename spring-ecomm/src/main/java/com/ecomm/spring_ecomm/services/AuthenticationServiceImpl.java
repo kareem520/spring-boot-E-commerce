@@ -72,9 +72,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = modelMapper.map(request, User.class);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        user.setRoles(roles);
+//        List<Role> roles = new ArrayList<>();
+//        roles.add(role);
+        user.addRole(role);
         userRepository.save(user);
 
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);

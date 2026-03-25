@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class User implements UserDetails {
     private LocalDateTime lastModifiedDate;
 
     @ManyToMany(
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            cascade = {CascadeType.PERSIST,CascadeType.MERGE},
             fetch = FetchType.EAGER
     )
     @JoinTable(
@@ -72,10 +73,10 @@ public class User implements UserDetails {
                     @JoinColumn(name = "roles_id")
             }
     )
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    List<Order> orders;
+    List<Order> orders = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
     private Cart cart;
