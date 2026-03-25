@@ -19,4 +19,5 @@ public class CreateProductRequest {
     @NotNull(message = "Quantity is required")
     @Min(value = 0, message = "Quantity cannot be negative")
     public Integer quantity;
+    private String sellerEmail;
 }

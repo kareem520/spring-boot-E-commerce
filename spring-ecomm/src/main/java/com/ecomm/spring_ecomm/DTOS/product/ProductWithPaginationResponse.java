@@ -17,4 +17,6 @@ public class ProductWithPaginationResponse {
     private Long totalElements;
     private Integer totalPages;
     private boolean lastPage;
+    private String sellerEmail;
+
 }

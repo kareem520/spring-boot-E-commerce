@@ -1,6 +1,8 @@
 package com.ecomm.spring_ecomm.services;
 
 
+import com.ecomm.spring_ecomm.AuthUtil.AuthUtil;
+import com.ecomm.spring_ecomm.DTOS.RoleDTO;
 import com.ecomm.spring_ecomm.Repositories.RoleRepository;
 import com.ecomm.spring_ecomm.Repositories.UserRepository;
 import com.ecomm.spring_ecomm.exception.BusinessException;
@@ -8,6 +10,7 @@ import com.ecomm.spring_ecomm.exception.ErrorCode;
 import com.ecomm.spring_ecomm.models.AppRole;
 import com.ecomm.spring_ecomm.models.Role;
 import com.ecomm.spring_ecomm.models.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,10 @@ public class RoleServiceImpl implements RoleService {
     RoleRepository roleRepository;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    AuthUtil  authUtil;
+    @Autowired
+    ModelMapper modelMapper;
     @Override
     public void addRoleToCustomer(String roleName, String customerEmail) {
 
@@ -44,6 +50,16 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
+    @Override
+    public List<RoleDTO> getRoles() {
+       User ourUser = authUtil.loggedInUser();
+        if (ourUser == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return ourUser.getRoles().stream().map(r->modelMapper.map(r,RoleDTO.class)).toList();
+    }
+
     void addRole(Role role, String customerEmail) {
         User user = userRepository.findByEmail(customerEmail)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, customerEmail));
@@ -53,6 +69,9 @@ public class RoleServiceImpl implements RoleService {
                 return;
             }
         }
-        roles.add(role);
+        roleRepository.save(role);
+        user.addRole(role);
+        userRepository.save(user);
+
     }
 }

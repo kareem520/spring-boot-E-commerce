@@ -147,6 +147,8 @@ public class ProductServiceImpl implements ProductService {
             ProductDTO newProductDTO = modelMapper.map(newProduct, ProductDTO.class);
             newProductDTO.setSpecialPrice(Calculation.calculateSpecialPrice(newProduct.getPrice()
                     ,newProduct.getDiscountPercentage()));
+            newProduct.setSeller(seller);
+            newProduct.setIsActive(true);
             return newProductDTO;
         }else
         {

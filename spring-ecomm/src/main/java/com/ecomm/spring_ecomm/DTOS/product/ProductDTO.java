@@ -12,4 +12,5 @@ public class ProductDTO {
     private double specialPrice;
     private String categoryName;
     private  Integer quantity;
+    private String sellerEmail;
 }

@@ -3,6 +3,7 @@ package com.ecomm.spring_ecomm.configurations;
 
 import com.ecomm.spring_ecomm.DTOS.Order.OrderDTO;
 import com.ecomm.spring_ecomm.DTOS.OrderItem.OrderItemDTO;
+import com.ecomm.spring_ecomm.DTOS.RoleDTO;
 import com.ecomm.spring_ecomm.cart.CartDTO;
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import com.ecomm.spring_ecomm.DTOS.product.ProductDTO;
@@ -60,6 +61,7 @@ public class AppConfig {
             productDTO.setSpecialPrice(Calculation.calculateSpecialPrice(source.getPrice(), source.getDiscountPercentage()));
             productDTO.setDiscountPercentage(source.getDiscountPercentage());
             productDTO.setQuantity(source.getQuantity());
+            productDTO.setSellerEmail(source.getSeller().getEmail());
             return productDTO;
         };
 

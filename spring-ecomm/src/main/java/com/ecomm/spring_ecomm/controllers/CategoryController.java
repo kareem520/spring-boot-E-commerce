@@ -19,6 +19,7 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    //PUBLIC
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryWithPaginationResponse> getAll(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -32,7 +33,10 @@ public class CategoryController {
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable String id){
         return new ResponseEntity<>(categoryService.getCategoryById(id),HttpStatus.OK);
     }
+
+    //ADMIN
     @PostMapping("/admin/add-category")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CategoryDTO> addCategory(@Valid @RequestBody CreateCategoryRequest category){
         CategoryDTO newCategory = categoryService.addCategory(category);
 
@@ -40,12 +44,14 @@ public class CategoryController {
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void>deleteCategory(String categoryId){
         categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CategoryUpdateResponse> updateCategory(@PathVariable String categoryId, @Valid @RequestBody CategoryUpdateNameRequest createCategoryRequest){
       CategoryUpdateResponse response =  categoryService.updateCategoryName(categoryId,createCategoryRequest);
 

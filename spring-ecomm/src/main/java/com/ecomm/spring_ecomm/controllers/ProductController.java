@@ -68,6 +68,7 @@ public class ProductController {
         return new ResponseEntity<>(productWithPaginationResponse, HttpStatus.OK);
     }
     @PostMapping("/seller/categories/{CategoryId}/product")
+    @PreAuthorize("hasAuthority('ROLE_SELLER')")
     public ResponseEntity<ProductDTO> addProduct(
             @PathVariable("CategoryId") String categoryId
             , @Valid @RequestBody CreateProductRequest product) {
