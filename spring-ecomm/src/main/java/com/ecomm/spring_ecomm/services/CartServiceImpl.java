@@ -1,6 +1,7 @@
-package com.ecomm.spring_ecomm.cart;
+package com.ecomm.spring_ecomm.services;
 
 import com.ecomm.spring_ecomm.AuthUtil.AuthUtil;
+import com.ecomm.spring_ecomm.DTOS.CartDTO;
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import com.ecomm.spring_ecomm.Repositories.CartItemRepository;
 import com.ecomm.spring_ecomm.Repositories.CartRepository;
@@ -41,6 +42,17 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_Cart_FOUND));
 
         return modelMapper.map(cart, CartDTO.class);
+    }
+    @Override
+    public CartDTO getMyCart() {
+
+        this.ourUser = authUtil.loggedInUser();
+
+        if (ourUser.getCart()==null){
+            createCart();
+        }
+        Cart ourCart =  ourUser.getCart();
+        return modelMapper.map(ourCart, CartDTO.class);
     }
 
     @Override

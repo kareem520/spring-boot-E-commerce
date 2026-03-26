@@ -1,4 +1,4 @@
-package com.ecomm.spring_ecomm.cart;
+package com.ecomm.spring_ecomm.DTOS;
 
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import lombok.AllArgsConstructor;

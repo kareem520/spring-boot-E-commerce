@@ -2,11 +2,9 @@ package com.ecomm.spring_ecomm.services;
 
 import com.ecomm.spring_ecomm.AuthUtil.AuthUtil;
 import com.ecomm.spring_ecomm.DTOS.Order.OrderDTO;
-import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import com.ecomm.spring_ecomm.Repositories.CartItemRepository;
 import com.ecomm.spring_ecomm.Repositories.OrderItemRepository;
 import com.ecomm.spring_ecomm.Repositories.OrderRepository;
-import com.ecomm.spring_ecomm.cart.CartService;
 import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.exception.ErrorCode;
 import com.ecomm.spring_ecomm.models.*;
@@ -115,6 +113,9 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrder(order);
             orderItems.add(orderItem);
 
+            // update product quantity
+            productService.takeQuantityFromProduct(cartItem.getProduct().getId(), cartItem.getQuantity());
+
             // remove from cart to trigger orphanRemoval
             cartItem.getCart().getItems().remove(cartItem);
             cartItem.setCart(null);
@@ -122,8 +123,7 @@ public class OrderServiceImpl implements OrderService {
 
             orderItemRepository.save(orderItem);
 
-            // update product quantity
-            productService.takeQuantityFromProduct(cartItem.getProduct().getId(), cartItem.getQuantity());
+
         }
 
         order.setOrderItems(orderItems);

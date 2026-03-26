@@ -110,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    @Transactional
     public ProductDTO addProductToYourProducts(String categoryId, CreateProductRequest productRequest) {
 
         User seller = authUtil.loggedInUser();
@@ -143,11 +144,11 @@ public class ProductServiceImpl implements ProductService {
         if(!isPresent) {
             Product newProduct = modelMapper.map(productRequest, Product.class);
             newProduct.setCategory(category);
+            newProduct.setSeller(seller);
             productRepository.save(newProduct);
             ProductDTO newProductDTO = modelMapper.map(newProduct, ProductDTO.class);
             newProductDTO.setSpecialPrice(Calculation.calculateSpecialPrice(newProduct.getPrice()
                     ,newProduct.getDiscountPercentage()));
-            newProduct.setSeller(seller);
             newProduct.setIsActive(true);
             return newProductDTO;
         }else

@@ -3,8 +3,7 @@ package com.ecomm.spring_ecomm.configurations;
 
 import com.ecomm.spring_ecomm.DTOS.Order.OrderDTO;
 import com.ecomm.spring_ecomm.DTOS.OrderItem.OrderItemDTO;
-import com.ecomm.spring_ecomm.DTOS.RoleDTO;
-import com.ecomm.spring_ecomm.cart.CartDTO;
+import com.ecomm.spring_ecomm.DTOS.CartDTO;
 import com.ecomm.spring_ecomm.DTOS.cartItem.CartItemDto;
 import com.ecomm.spring_ecomm.DTOS.product.ProductDTO;
 import com.ecomm.spring_ecomm.helper.Calculation;
