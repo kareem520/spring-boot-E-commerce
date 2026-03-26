@@ -2,10 +2,12 @@ package com.ecomm.spring_ecomm.services;
 
 import com.ecomm.spring_ecomm.DTOS.user.ChangePasswordRequest;
 import com.ecomm.spring_ecomm.DTOS.user.ProfileUpdateRequest;
+import com.ecomm.spring_ecomm.DTOS.user.UserDTO;
 import com.ecomm.spring_ecomm.Repositories.UserRepository;
 import com.ecomm.spring_ecomm.exception.BusinessException;
 import com.ecomm.spring_ecomm.exception.ErrorCode;
 import com.ecomm.spring_ecomm.models.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,12 +22,22 @@ public class UserServiceImpl implements UserService{
     UserRepository userRepository;
 
     @Autowired
+    ModelMapper modelMapper;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         User user =  this.userRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userEmail));
         return  user;
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        User user =  this.userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, email));
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override

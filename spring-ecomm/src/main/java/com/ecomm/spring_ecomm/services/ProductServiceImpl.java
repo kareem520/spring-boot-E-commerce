@@ -158,6 +158,52 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDTO addQuantityToYourProduct(String productId, Integer quantity) {
+        User seller = authUtil.loggedInUser();
+        if (seller == null) {
+            throw new BusinessException(ErrorCode.SELLER_MUST_BE_LOGGED_IN);
+        }
+
+        Product product = productRepository.findByIdAndIsActiveTrue(productId)
+                .orElseThrow(()->new BusinessException(ErrorCode.ENTITY_NOT_FOUND,"Product",productId));
+
+        product.setQuantity(product.getQuantity() + quantity);
+        productRepository.save(product);
+        return modelMapper.map(product, ProductDTO.class);
+
+    }
+
+    public ProductDTO updateProductPrice(String productId, Double productPrice) {
+        User seller = authUtil.loggedInUser();
+        if (seller == null) {
+            throw new BusinessException(ErrorCode.SELLER_MUST_BE_LOGGED_IN);
+        }
+
+        Product product = productRepository.findByIdAndIsActiveTrue(productId)
+                .orElseThrow(()->new BusinessException(ErrorCode.ENTITY_NOT_FOUND,"Product",productId));
+
+        product.setPrice(productPrice);
+        productRepository.save(product);
+        return modelMapper.map(product, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO updateProductDiscount(String productId, Double productDiscount) {
+        User seller = authUtil.loggedInUser();
+        if (seller == null) {
+            throw new BusinessException(ErrorCode.SELLER_MUST_BE_LOGGED_IN);
+        }
+
+        Product product = productRepository.findByIdAndIsActiveTrue(productId)
+                .orElseThrow(()->new BusinessException(ErrorCode.ENTITY_NOT_FOUND,"Product",productId));
+
+        product.setDiscountPercentage(productDiscount);
+        productRepository.save(product);
+        return modelMapper.map(product, ProductDTO.class);
+    }
+
+
+    @Override
     @Transactional
     public void takeQuantityFromProduct(String productId, Integer quantity) {
 

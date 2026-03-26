@@ -75,7 +75,7 @@ public class AppConfig {
             cartItemDto.setDiscountPercentage(source.getDiscountPercentage());
             cartItemDto.setProductId(source.getProduct().getId());
             cartItemDto.setId(source.getId());
-            cartItemDto.setProductName(source.getProduct().getName());
+            cartItemDto.setProductName(source.getProductName());
             cartItemDto.setSpecialPrice(Calculation.calculateSpecialPrice(source.getPrice(), source.getDiscountPercentage()));
             cartItemDto.setQuantity(source.getQuantity());
             cartItemDto.setSubTotal(Calculation.calculateSubTotal(source.getSpecialPrice(),source.getQuantity()));
@@ -109,7 +109,7 @@ public class AppConfig {
             orderItemDTO.setId(source.getId());
             orderItemDTO.setQuantity(source.getQuantity());
             orderItemDTO.setProductId(source.getProduct().getId());
-            orderItemDTO.setProductName(source.getProduct().getName());
+            orderItemDTO.setProductName(source.getProductName());
             orderItemDTO.setPrice(source.getPrice());
             orderItemDTO.setDiscountPercentage(source.getDiscount());
             orderItemDTO.setOrderProductPrice(source.getOrderProductPrice());

@@ -75,11 +75,20 @@ public class ProductController {
         return new ResponseEntity<>(productService.addProductToYourProducts(categoryId,product),HttpStatus.CREATED);
 
     }
-    @DeleteMapping("seller/{productId}")
+    @DeleteMapping("/seller/{productId}")
     @PreAuthorize("hasAuthority('ROLE_SELLER') and @productServiceSecurity.isProductOwner(#productId)")
     public ResponseEntity<Void> deleteProduct(@PathVariable String productId) {
         productService.deactivateProduct(productId);
         return ResponseEntity.ok().build();
     }
-
+    @PutMapping("/seller/{productId}/quantity/{quantity}")
+    @PreAuthorize("hasAuthority('ROLE_SELLER') and @productServiceSecurity.isProductOwner(#productId)")
+    public ResponseEntity<ProductDTO> addQuantityForProduct(@PathVariable String productId, @PathVariable Integer quantity) {
+        return new ResponseEntity<>(productService.addQuantityToYourProduct(productId,quantity),HttpStatus.OK);
+    }
+    @PutMapping("/seller/{productId}/discount/{discountPercentage}")
+    @PreAuthorize("hasAuthority('ROLE_SELLER') and @productServiceSecurity.isProductOwner(#productId)")
+    public ResponseEntity<ProductDTO> addQuantityForProduct(@PathVariable String productId, @PathVariable Double discountPercentage) {
+        return new ResponseEntity<>(productService.updateProductDiscount(productId,discountPercentage),HttpStatus.OK);
+    }
 }

@@ -1,6 +1,9 @@
 package com.ecomm.spring_ecomm.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,10 +35,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = UUID)
     private String id;
     @Column(name = "FIRST_NAME", nullable = false)
+    @Size(min = 2, max = 50, message = "user first name must be between {min} and {max} characters")
     private String firstName;
+    @Size(min = 2, max = 50, message = "user last name must be between {min} and {max} characters")
     @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
     @Column(name = "EMAIL", unique = true, nullable = false)
+    @Email(message = "must be in email form @")
     private String email;
     @Column(name = "PHONE_NUMBER", unique = true, nullable = false)
     private String phoneNumber;

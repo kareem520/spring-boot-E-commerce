@@ -16,6 +16,8 @@ public interface ProductService {
 
     ProductDTO addProductToYourProducts(String categoryId, CreateProductRequest productRequest);
 
+    ProductDTO addQuantityToYourProduct(String productId, Integer quantity);
+    ProductDTO updateProductDiscount(String productId, Double productDiscount);
     void takeQuantityFromProduct(String productId, Integer quantity);
 
     void deactivateProduct(String productId);
