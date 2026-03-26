@@ -47,6 +47,15 @@ A streamlined interface focused on discovery and purchasing.
 
 - Order Fulfillment: Seamless conversion of cart items into orders
 
+## Shopping Application
+The Shopping application is the front-end of the e-commerce website where customers can browse and purchase products. The following features are available in the Shopping application:
+
+- Categories Listing: Customers can browse products by categories. They can select a specific category and view all products associated with that category.
+- Product Details: Customers can view detailed information about a specific product, including its name, description, price, and customer reviews etc... 
+- Search Products: Customers can search for products based on keywords. The search functionality allows customers to find products quickly and easily.
+- Shopping Cart: Customers can add products to the cart for purchase. They can add multiple products, update quantities, and remove items from the cart.
+- Manage Orders: Customers can view and manage their orders. They can track the status of their orders, view order history, and request order cancellations or  returns.
+- Customer Registration: New customers can register on the website. They can create an account, provide their personal information, and set up a password for future logins.
 
 ## 🔐 Security & Access Control
 The project implements Spring Security with a custom JWT implementation:
