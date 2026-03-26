@@ -4,6 +4,7 @@ import com.ecomm.spring_ecomm.DTOS.RoleDTO;
 import com.ecomm.spring_ecomm.Repositories.RoleRepository;
 import com.ecomm.spring_ecomm.models.Role;
 import com.ecomm.spring_ecomm.services.RoleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@Tag(name = "roles", description = "Role API")
 public class RoleController {
 
 
