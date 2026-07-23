@@ -1,11 +1,6 @@
 # 🛒 Project Overview
 Spring-Ecomm is a full-featured, multi-tenant e-commerce marketplace API built with Spring Boot 4. The system is architected to support three distinct user interfaces, each with its own business logic and security constraints, all managed through a unified JWT-based authentication system.
 
-## 🌍 Live Demo 
-
-- **Production URL:** https://spring-boot-e-commerce-production-1434.up.railway.app
-
-- **Interactive API Docs (Swagger):** [API documentation](https://spring-boot-e-commerce-production-1434.up.railway.app/swagger-ui.html) to see all endpoints.
 
 ## 🛠️ Tech Stack
 - **Backend:** Spring Boot, Java
@@ -72,7 +67,6 @@ Once the application is running, you can explore and test the endpoints using th
 
 - **Production URL:** https://spring-boot-e-commerce-production-1434.up.railway.app
 
-- **Interactive API Docs (Swagger):** [API documentation](https://spring-boot-e-commerce-production-1434.up.railway.app/swagger-ui.html).
 
 ## 2. Initial Authentication
 To access protected endpoints (Admin/Seller), you must first authenticate:
