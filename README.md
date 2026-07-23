@@ -65,7 +65,6 @@ The project implements Spring Security with a custom JWT implementation:
 Once the application is running, you can explore and test the endpoints using the following methods:
 
 
-- **Production URL:** https://spring-boot-e-commerce-production-1434.up.railway.app
 
 
 ## 2. Initial Authentication
